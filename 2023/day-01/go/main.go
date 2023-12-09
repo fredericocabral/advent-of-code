@@ -4,7 +4,7 @@ import (
 	"unicode"
 )
 
-func digits(value string) (rune, rune) {
+func calibrate(value string) (rune, rune) {
 
 	var first rune
 	var second rune
