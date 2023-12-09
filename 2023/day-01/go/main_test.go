@@ -6,45 +6,57 @@ func TestCalibration(t *testing.T) {
 
 	t.Run("at edges", func(t *testing.T) {
 		// act
-		first, second := calibrate("1abc2")
+		calibration := calibrate("1abc2")
 
 		// assert
-		assert(t, first, '1')
-		assert(t, second, '2')
+		assertCalibration(t, calibration, 12)
 	})
 
 	t.Run("in the value", func(t *testing.T) {
 		// act
-		first, second := calibrate("pqr3stu8vwx")
+		calibration := calibrate("pqr3stu8vwx")
 
 		// assert
-		assert(t, first, '3')
-		assert(t, second, '8')
+		assertCalibration(t, calibration, 38)
 	})
 
 	t.Run("when there are more than two digits", func(t *testing.T) {
 		// act
-		first, second := calibrate("a1b2c3d4e5f")
+		calibration := calibrate("a1b2c3d4e5f")
 
 		// assert
-		assert(t, first, '1')
-		assert(t, second, '5')
+		assertCalibration(t, calibration, 15)
 	})
 
 	t.Run("when there is only one digit", func(t *testing.T) {
 		// act
-		first, second := calibrate("treb7uchet")
+		calibration := calibrate("treb7uchet")
 		// assert
-		assert(t, first, '7')
-		assert(t, second, '7')
+		assertCalibration(t, calibration, 77)
 	})
 }
 
-func testSumOfAllCalibrationValue() {
+func TestSumOfAllCalibrationValues(t *testing.T) {
+	// arrange
+	var calibrations []string
+	calibrations = append(calibrations, "1abc2")
+	calibrations = append(calibrations, "pqr3stu8vwx")
+
+	// act
+	got := sumAll(calibrations)
+
+	// assert
+	assertSum(t, got, 50)
 }
 
-func assert(t *testing.T, received, expected rune) {
+func assertCalibration(t *testing.T, received, expected int) {
 	if received != expected {
-		t.Fatalf("received (%c) but expected (%c)", received, expected)
+		t.Fatalf("received (%d) but expected (%d)", received, expected)
+	}
+}
+
+func assertSum(t *testing.T, received, expected int) {
+	if received != expected {
+		t.Fatalf("received (%d) but expected (%d)", received, expected)
 	}
 }
