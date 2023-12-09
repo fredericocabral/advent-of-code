@@ -23,7 +23,7 @@ func calibrate(value string) int {
 
 	num, err := strconv.Atoi(val)
 	if err != nil {
-		panic("error converting to int")
+		panic("error->" + string(val))
 	}
 
 	return num

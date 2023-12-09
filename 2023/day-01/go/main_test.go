@@ -1,6 +1,11 @@
 package main
 
-import "testing"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"testing"
+)
 
 func TestCalibration(t *testing.T) {
 
@@ -47,6 +52,31 @@ func TestSumOfAllCalibrationValues(t *testing.T) {
 
 	// assert
 	assert(t, got, 50)
+}
+
+func TestSumFromLinesInFile(t *testing.T) {
+
+	file, err := os.Open("input.txt")
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	var input []string
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		fmt.Println(line)
+		input = append(input, line)
+	}
+
+	got := sumAll(input)
+
+	// assert
+	assert(t, got, 54697)
 }
 
 func assert(t *testing.T, received, expected int) {
