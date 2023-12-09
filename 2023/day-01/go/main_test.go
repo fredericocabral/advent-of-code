@@ -56,23 +56,10 @@ func TestSumOfAllCalibrationValues(t *testing.T) {
 
 func TestSumFromLinesInFile(t *testing.T) {
 
-	file, err := os.Open("input.txt")
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
-	}
-	defer file.Close()
+	// arrange
+	input := readInputFromFile("input.txt")
 
-	scanner := bufio.NewScanner(file)
-
-	var input []string
-
-	for scanner.Scan() {
-		line := scanner.Text()
-		fmt.Println(line)
-		input = append(input, line)
-	}
-
+	// act
 	got := sumAll(input)
 
 	// assert
@@ -83,4 +70,23 @@ func assert(t *testing.T, received, expected int) {
 	if received != expected {
 		t.Fatalf("received (%d) but expected (%d)", received, expected)
 	}
+}
+
+func readInputFromFile(fileName string) []string {
+	var input []string
+
+	file, err := os.Open(fileName)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		input = append(input, scanner.Text())
+	}
+
+	return input
+
 }

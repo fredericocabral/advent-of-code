@@ -6,9 +6,7 @@ import (
 )
 
 func calibrate(value string) int {
-
-	var first rune
-	var second rune
+	var first, second rune
 
 	for _, char := range value {
 		if unicode.IsDigit(char) {
@@ -20,17 +18,15 @@ func calibrate(value string) int {
 	}
 
 	val := string(first) + string(second)
-
 	num, err := strconv.Atoi(val)
 	if err != nil {
-		panic("error->" + string(val))
+		panic("error: " + string(val))
 	}
 
 	return num
 }
 
 func sumAll(lines []string) int {
-
 	sum := 0
 
 	for _, line := range lines {
