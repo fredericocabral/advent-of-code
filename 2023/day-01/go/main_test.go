@@ -4,16 +4,28 @@ import "testing"
 
 func TestExtractDigits(t *testing.T) {
 
-	first, second := digits("1abc2")
+	t.Run("extract digits from value", func(t *testing.T) {
+		// act
+		first, second := digits("1abc2")
 
-	firstExpected := '1'
-	if first != firstExpected {
-		t.Fatalf("expected (%c) got (%c)", first, firstExpected)
+		// assert
+		assert(t, first, '1')
+		assert(t, second, '2')
+	})
+
+	t.Run("extract digits from other value", func(t *testing.T) {
+		// act
+		first, second := digits("pqr3stu8vwx")
+
+		// assert
+		assert(t, first, '3')
+		assert(t, second, '8')
+	})
+
+}
+
+func assert(t *testing.T, received, expected rune) {
+	if received != expected {
+		t.Fatalf("received (%c) but expected (%c)", received, expected)
 	}
-
-	secondExpected := '2'
-	if second != secondExpected {
-		t.Fatalf("expected (%c), got (%c)", second, secondExpected)
-	}
-
 }
