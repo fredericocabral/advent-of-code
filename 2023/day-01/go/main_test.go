@@ -41,6 +41,85 @@ func TestCalibration(t *testing.T) {
 	})
 }
 
+func TestCalibrationWithSpelledNumbers(t *testing.T) {
+
+	t.Run("two and nine", func(t *testing.T) {
+		// act
+		calibration := calibrate("two1nine")
+
+		// assert
+		assert(t, calibration, 29)
+	})
+
+	t.Run("eight and three", func(t *testing.T) {
+		// act
+		calibration := calibrate("eightwothree")
+
+		// assert
+		assert(t, calibration, 83)
+	})
+
+	t.Run("one and three", func(t *testing.T) {
+		// act
+		calibration := calibrate("abcone2threexyz")
+
+		// assert
+		assert(t, calibration, 13)
+	})
+
+	t.Run("two and four", func(t *testing.T) {
+		// act
+		calibration := calibrate("xtwone3four")
+
+		// assert
+		assert(t, calibration, 24)
+	})
+
+	t.Run("starting and finishing with real numbers", func(t *testing.T) {
+		// act
+		calibration := calibrate("4nineeightseven2")
+
+		// assert
+		assert(t, calibration, 42)
+	})
+
+	t.Run("spelled with real number", func(t *testing.T) {
+		// act
+		calibration := calibrate("zoneight234")
+
+		// assert
+		assert(t, calibration, 14)
+	})
+
+	t.Run("spelled with real number 2", func(t *testing.T) {
+		// act
+		calibration := calibrate("7pqrstsixteen")
+
+		// assert
+		assert(t, calibration, 76)
+	})
+
+}
+
+func TestSumOfAllCalibrationValues2(t *testing.T) {
+	// arrange
+	var calibrations []string
+
+	calibrations = append(calibrations, "two1nine")
+	calibrations = append(calibrations, "eightwothree")
+	calibrations = append(calibrations, "abcone2threexyz")
+	calibrations = append(calibrations, "xtwone3four")
+	calibrations = append(calibrations, "4nineeightseven2")
+	calibrations = append(calibrations, "zoneight234")
+	calibrations = append(calibrations, "7pqrstsixteen")
+
+	// act
+	got := sumAll(calibrations)
+
+	// assert
+	assert(t, got, 282)
+}
+
 func TestSumOfAllCalibrationValues(t *testing.T) {
 	// arrange
 	var calibrations []string
@@ -57,7 +136,7 @@ func TestSumOfAllCalibrationValues(t *testing.T) {
 func TestSumFromLinesInFile(t *testing.T) {
 
 	// arrange
-	input := readInputFromFile("input.txt")
+	input := readInputFromFile("input5.txt")
 
 	// act
 	got := sumAll(input)
