@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"unicode"
 )
 
@@ -25,6 +26,7 @@ func last(line string) int {
 }
 
 func extract(line string, numbers [9]string) int {
+	acc := ""
 
 	for i := 0; i < len(line); i++ {
 		if unicode.IsDigit(rune(line[i])) {
@@ -32,11 +34,11 @@ func extract(line string, numbers [9]string) int {
 			return digit
 		}
 
-		for n := 0; n < len(numbers); n++ {
-			if len(line[i:]) >= len(numbers[n]) {
-				if numbers[n] == line[i:len(numbers[n])+i] {
-					return n + 1
-				}
+		acc += string(line[i])
+
+		for n, number := range numbers {
+			if strings.HasSuffix(acc, number) {
+				return n + 1
 			}
 		}
 	}
