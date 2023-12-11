@@ -1,69 +1,90 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+	"os"
 	"strconv"
 	"unicode"
 )
 
-func calibrate(line string) int {
-
+func first(line string) int {
 	numbers := [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+	return extract(line, numbers)
+}
 
-	first, last := 0, 0
+func last(line string) int {
+	numbers := [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+	var reversedNumbers [9]string
 
-	for len(line) > 0 {
-		found := false
-		if unicode.IsDigit(rune(line[0])) {
-			if first == 0 {
-				first, _ = strconv.Atoi(string(line[0]))
-			} else {
-				last, _ = strconv.Atoi(string(line[0]))
-			}
+	for n := 0; n < len(numbers); n++ {
+		reversedNumbers[n] = reverse(numbers[n])
+	}
 
-		} else {
+	return extract(reverse(line), reversedNumbers)
+}
 
-			for i := 0; i < len(numbers); i++ {
+func extract(line string, numbers [9]string) int {
 
-				currentNumber := numbers[i]
+	for i := 0; i < len(line); i++ {
+		if unicode.IsDigit(rune(line[i])) {
+			digit, _ := strconv.Atoi(string(line[i]))
+			return digit
+		}
 
-				if len(line) >= len(currentNumber) {
-					if line[0:len(currentNumber)] == currentNumber {
-						if first == 0 {
-							first = i + 1
-						} else {
-							last = i + 1
-						}
-
-						line = line[len(currentNumber):]
-						found = true
-						break
-
-					}
+		for n := 0; n < len(numbers); n++ {
+			if len(line[i:]) >= len(numbers[n]) {
+				if numbers[n] == line[i:len(numbers[n])+i] {
+					return n + 1
 				}
-
 			}
 		}
+	}
+	return 0
+}
 
-		if !found {
-			line = line[1:]
-		}
+func reverse(value string) string {
+	var reversed string
 
+	for i := len(value) - 1; i >= 0; i-- {
+		reversed = reversed + string(value[i])
 	}
 
-	if last == 0 {
-		last = first
-	}
-
-	return first*10 + last
-
+	return reversed
 }
 
 func sumAll(lines []string) int {
 	sum := 0
 
 	for _, line := range lines {
-		sum += calibrate(line)
+		sum += first(line)*10 + last(line)
 	}
 
 	return sum
+}
+
+func main() {
+	input := readInputFromFile("input.txt")
+
+	calibration := sumAll(input)
+
+	fmt.Printf("Result: (%d) ", calibration)
+}
+
+func readInputFromFile(fileName string) []string {
+	var input []string
+
+	file, err := os.Open(fileName)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		input = append(input, scanner.Text())
+	}
+
+	return input
 }

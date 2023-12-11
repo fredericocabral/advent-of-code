@@ -1,107 +1,155 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	"os"
 	"testing"
 )
 
-func TestCalibration(t *testing.T) {
+func TestCalibrationNew(t *testing.T) {
 
 	t.Run("at edges", func(t *testing.T) {
 		// act
-		calibration := calibrate("1abc2")
+		first := first("1abc2")
+		last := last("1abc2")
 
 		// assert
-		assert(t, calibration, 12)
+		assert(t, first, 1)
+		assert(t, last, 2)
+	})
+
+	t.Run("at edges 2", func(t *testing.T) {
+		// act
+		first := first("vsskdclbtmjmvrseven6")
+		last := last("vsskdclbtmjmvrseven6")
+
+		// assert
+		assert(t, first, 7)
+		assert(t, last, 6)
+	})
+
+	t.Run("at edges 3", func(t *testing.T) {
+		// act
+		first := first("zlmlk1")
+		last := last("zlmlk1")
+
+		// assert
+		assert(t, first, 1)
+		assert(t, last, 1)
 	})
 
 	t.Run("in the value", func(t *testing.T) {
 		// act
-		calibration := calibrate("pqr3stu8vwx")
+		first := first("pqr3stu8vwx")
+		last := last("pqr3stu8vwx")
 
 		// assert
-		assert(t, calibration, 38)
+		assert(t, first, 3)
+		assert(t, last, 8)
 	})
 
 	t.Run("when there are more than two digits", func(t *testing.T) {
 		// act
-		calibration := calibrate("a1b2c3d4e5f")
+		first := first("a1b2c3d4e5f")
+		last := last("a1b2c3d4e5f")
 
 		// assert
-		assert(t, calibration, 15)
+		assert(t, first, 1)
+		assert(t, last, 5)
 	})
 
 	t.Run("when there is only one digit", func(t *testing.T) {
 		// act
-		calibration := calibrate("treb7uchet")
+		first := first("treb7uchet")
+		last := last("treb7uchet")
+
 		// assert
-		assert(t, calibration, 77)
+		assert(t, first, 7)
+		assert(t, last, 7)
 	})
-}
 
-func TestCalibrationWithSpelledNumbers(t *testing.T) {
-
-	t.Run("two and nine", func(t *testing.T) {
+	t.Run("two and nine spelled", func(t *testing.T) {
 		// act
-		calibration := calibrate("two1nine")
+		first := first("two1nine")
+		last := last("two1nine")
 
 		// assert
-		assert(t, calibration, 29)
+		assert(t, first, 2)
+		assert(t, last, 9)
 	})
 
 	t.Run("eight and three", func(t *testing.T) {
 		// act
-		calibration := calibrate("eightwothree")
+		first := first("eightwothree")
+		last := last("eightwothree")
 
 		// assert
-		assert(t, calibration, 83)
+		assert(t, first, 8)
+		assert(t, last, 3)
 	})
 
 	t.Run("one and three", func(t *testing.T) {
 		// act
-		calibration := calibrate("abcone2threexyz")
+		first := first("abcone2threexyz")
+		last := last("abcone2threexyz")
 
 		// assert
-		assert(t, calibration, 13)
+		assert(t, first, 1)
+		assert(t, last, 3)
 	})
 
 	t.Run("two and four", func(t *testing.T) {
 		// act
-		calibration := calibrate("xtwone3four")
+		first := first("xtwone3four")
+		last := last("xtwone3four")
 
 		// assert
-		assert(t, calibration, 24)
+		assert(t, first, 2)
+		assert(t, last, 4)
 	})
 
 	t.Run("starting and finishing with real numbers", func(t *testing.T) {
 		// act
-		calibration := calibrate("4nineeightseven2")
+		first := first("4nineeightseven2")
+		last := last("4nineeightseven2")
 
 		// assert
-		assert(t, calibration, 42)
+		assert(t, first, 4)
+		assert(t, last, 2)
 	})
 
 	t.Run("spelled with real number", func(t *testing.T) {
 		// act
-		calibration := calibrate("zoneight234")
+		first := first("zoneight234")
+		last := last("zoneight234")
 
 		// assert
-		assert(t, calibration, 14)
+		assert(t, first, 1)
+		assert(t, last, 4)
 	})
 
 	t.Run("spelled with real number 2", func(t *testing.T) {
 		// act
-		calibration := calibrate("7pqrstsixteen")
+		first := first("7pqrstsixteen")
+		last := last("7pqrstsixteen")
 
 		// assert
-		assert(t, calibration, 76)
+		assert(t, first, 7)
+		assert(t, last, 6)
 	})
 
 }
 
-func TestSumOfAllCalibrationValues2(t *testing.T) {
+func TestReverse(t *testing.T) {
+
+	got := reverse("one")
+	what := "eno"
+
+	if got != what {
+		t.Fatalf("received (%s) but expected (%s)", got, what)
+	}
+
+}
+
+func TestSumOfAllCalibrationValues(t *testing.T) {
 	// arrange
 	var calibrations []string
 
@@ -117,55 +165,11 @@ func TestSumOfAllCalibrationValues2(t *testing.T) {
 	got := sumAll(calibrations)
 
 	// assert
-	assert(t, got, 282)
-}
-
-func TestSumOfAllCalibrationValues(t *testing.T) {
-	// arrange
-	var calibrations []string
-	calibrations = append(calibrations, "1abc2")
-	calibrations = append(calibrations, "pqr3stu8vwx")
-
-	// act
-	got := sumAll(calibrations)
-
-	// assert
-	assert(t, got, 50)
-}
-
-func TestSumFromLinesInFile(t *testing.T) {
-
-	// arrange
-	input := readInputFromFile("input5.txt")
-
-	// act
-	got := sumAll(input)
-
-	// assert
-	assert(t, got, 54697)
+	assert(t, got, 281)
 }
 
 func assert(t *testing.T, received, expected int) {
 	if received != expected {
 		t.Fatalf("received (%d) but expected (%d)", received, expected)
 	}
-}
-
-func readInputFromFile(fileName string) []string {
-	var input []string
-
-	file, err := os.Open(fileName)
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		input = append(input, scanner.Text())
-	}
-
-	return input
-
 }
