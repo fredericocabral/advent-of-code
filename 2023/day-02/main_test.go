@@ -4,66 +4,53 @@ import (
 	"testing"
 )
 
-func TestSumNumberOfCubes(t *testing.T) {
-
-	game := []map[string]int{
-		{
-			GREEN: 8, BLUE: 6, RED: 20,
-		},
-		{
-			BLUE: 5, RED: 4, GREEN: 13,
-		},
-		{
-			RED: 1, GREEN: 5,
-		},
-	}
-
-	expected := map[string]int{GREEN: 26, BLUE: 11, RED: 25}
-
-	got := SumNumberOfCuber(game)
-
-	for key, valueExpected := range expected {
-		valueGot, ok := got[key]
-		if !ok || valueExpected != valueGot {
-			t.Fatalf("got %s:%d but expected %s:%d", key, valueGot, key, valueExpected)
-		}
-	}
-
-}
-
 func TestIsPossible(t *testing.T) {
 
-	t.Run("No, if red above limit", func(t *testing.T) {
-		sumOfCubes := map[string]int{GREEN: 26, BLUE: 11, RED: 25}
+	t.Run("Not limit reached", func(t *testing.T) {
 
-		if IsItPossible(sumOfCubes) {
-			t.Fatalf("this game should not be possible")
+		game := []map[string]int{
+			{RED: 4, GREEN: 8},
+			{RED: 1, GREEN: 10},
+			{RED: 2, GREEN: 1},
+			{GREEN: 2, BLUE: 1},
+			{RED: 4, GREEN: 12},
+			{GREEN: 3},
+		}
+
+		if !IsItPossible(game) {
+			t.Fatalf("this game should be possible")
 		}
 
 	})
 
 	t.Run("No, if green above limit", func(t *testing.T) {
-		sumOfCubes := map[string]int{GREEN: 14, BLUE: 5, RED: 10}
+		cubes := []map[string]int{
+			{GREEN: 14, BLUE: 5, RED: 10},
+		}
 
-		if IsItPossible(sumOfCubes) {
+		if IsItPossible(cubes) {
 			t.Fatalf("this game should not be possible")
 		}
 
 	})
 
 	t.Run("No, if blue above limit", func(t *testing.T) {
-		sumOfCubes := map[string]int{GREEN: 11, BLUE: 15, RED: 10}
+		cubes := []map[string]int{
+			{GREEN: 11, BLUE: 15, RED: 10},
+		}
 
-		if IsItPossible(sumOfCubes) {
+		if IsItPossible(cubes) {
 			t.Fatalf("this game should not be possible")
 		}
 
 	})
 
 	t.Run("Yes, if all below limit", func(t *testing.T) {
-		sumOfCubes := map[string]int{GREEN: 13, BLUE: 14, RED: 12}
+		cubes := []map[string]int{
+			{GREEN: 13, BLUE: 14, RED: 12},
+		}
 
-		if !IsItPossible(sumOfCubes) {
+		if !IsItPossible(cubes) {
 			t.Fatalf("this game should be possible")
 		}
 

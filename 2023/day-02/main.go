@@ -15,8 +15,17 @@ const (
 )
 
 func main() {
+	games := ParseInput(readInputFromFile("input.txt"))
 
-	readInputFromFile("input.txt")
+	var gameResults []bool
+
+	for _, game := range games {
+		gameResults = append(gameResults, IsItPossible(game))
+	}
+
+	result := SumAllPossibleGames(gameResults)
+
+	fmt.Printf("Result: %d \n", result)
 
 }
 
@@ -50,33 +59,21 @@ func ParseInput(lines []string) [][]map[string]int {
 	return games
 }
 
-func SumNumberOfCuber(game []map[string]int) map[string]int {
-	acc := make(map[string]int)
+func IsItPossible(games []map[string]int) bool {
 
-	for i := 0; i < len(game); i++ {
-		for key, value := range game[i] {
-			acc[key] = acc[key] + value
-			//fmt.Printf("%s:%d\n", key, acc[key])
-		}
-	}
+	for _, game := range games {
+		for key, value := range game {
+			if key == RED && value > 12 {
+				return false
+			}
 
-	return acc
+			if key == GREEN && value > 13 {
+				return false
+			}
 
-}
-
-func IsItPossible(game map[string]int) bool {
-
-	for key, value := range game {
-		if key == "red" && value > 12 {
-			return false
-		}
-
-		if key == "green" && value > 13 {
-			return false
-		}
-
-		if key == "blue" && value > 14 {
-			return false
+			if key == BLUE && value > 14 {
+				return false
+			}
 		}
 	}
 
