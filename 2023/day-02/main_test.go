@@ -67,10 +67,23 @@ func TestIsPossible(t *testing.T) {
 
 	t.Run("No, if blue above limit", func(t *testing.T) {
 
-		sumOfCubes := map[string]int{GREEN: 11, BLUE: 14, RED: 10}
+		sumOfCubes := map[string]int{GREEN: 11, BLUE: 15, RED: 10}
 
 		got := IsItPossible(sumOfCubes)
 		expected := false
+
+		if got != expected {
+			t.Fatalf("got (%t) bue expected (%t)", got, expected)
+		}
+
+	})
+
+	t.Run("Yes, if all below limit", func(t *testing.T) {
+
+		sumOfCubes := map[string]int{GREEN: 13, BLUE: 14, RED: 12}
+
+		got := IsItPossible(sumOfCubes)
+		expected := true
 
 		if got != expected {
 			t.Fatalf("got (%t) bue expected (%t)", got, expected)

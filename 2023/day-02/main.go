@@ -29,7 +29,7 @@ func IsItPossible(game map[string]int) bool {
 			return false
 		}
 
-		if key == "blue" && value > 13 {
+		if key == "blue" && value > 14 {
 			return false
 		}
 	}
