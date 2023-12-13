@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 const (
 	GREEN = "green"
@@ -35,53 +37,14 @@ func TestSumNumberOfCubes(t *testing.T) {
 
 }
 
-func TestQuantityOfCubes(t *testing.T) {
+func TestIsPossible(t *testing.T) {
 
-	t.Run("A possible game", func(t *testing.T) {
+	t.Run("No, if red above limit", func(t *testing.T) {
 
-		game := []map[string]int{
-			{
-				"blue": 3,
-				"red":  4,
-			},
-			{
-				"blue": 4,
-				"red":  2,
-			},
-		}
+		sumOfCubes := map[string]int{GREEN: 26, BLUE: 11, RED: 25}
 
-		expected := true
-		got := IsItPossible(game)
-
-		if got != expected {
-			t.Fatalf("got (%t) bue expected (%t)", got, expected)
-		}
-
-	})
-
-	t.Run("A inpossible game", func(t *testing.T) {
-
-		//Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
-
-		game := []map[string]int{
-			{
-				"gree": 8,
-				"blue": 6,
-				"red":  20,
-			},
-			{
-				"blue":  5,
-				"red":   4,
-				"green": 13,
-			},
-			{
-				"red":   1,
-				"green": 5,
-			},
-		}
-
+		got := IsItPossible(sumOfCubes)
 		expected := false
-		got := IsItPossible(game)
 
 		if got != expected {
 			t.Fatalf("got (%t) bue expected (%t)", got, expected)
@@ -89,10 +52,30 @@ func TestQuantityOfCubes(t *testing.T) {
 
 	})
 
-	// Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-	// id
-	// sets:
-	//	"color"
-	//	"quantity"
+	t.Run("No, if green above limit", func(t *testing.T) {
+
+		sumOfCubes := map[string]int{GREEN: 14, BLUE: 5, RED: 10}
+
+		got := IsItPossible(sumOfCubes)
+		expected := false
+
+		if got != expected {
+			t.Fatalf("got (%t) bue expected (%t)", got, expected)
+		}
+
+	})
+
+	t.Run("No, if blue above limit", func(t *testing.T) {
+
+		sumOfCubes := map[string]int{GREEN: 11, BLUE: 14, RED: 10}
+
+		got := IsItPossible(sumOfCubes)
+		expected := false
+
+		if got != expected {
+			t.Fatalf("got (%t) bue expected (%t)", got, expected)
+		}
+
+	})
 
 }
